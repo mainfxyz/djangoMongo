@@ -1,0 +1,6 @@
+python中安装django和mongoengine库
+json数据导入到shops数据库的shop_d_b表中
+运行python manage.py runserver 0.0.0.0:80运行服务器
+或者双机“运行服务器.bat“文件
+浏览器中输入localhost打开网页
+管理员在localhost/admin中

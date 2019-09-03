@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员</title>
+      <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+    <style>
+        body{
+            color:black;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-danger navbar-dark">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/admin">商品表<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/adminUser">用户表<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div style="text-align: center"><h1 style="color: black">用户表</h1></div>
+      <table class="table table-light table-hover">
+    <thead>
+      <tr>
+        <th>商品名</th>
+        <th>商品价格</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for row in users %}
+      <tr>
+        <td><input type="text" value="{{row.username}}" style="background: 0;border:0;color:#fff"></td>
+        <td><input type="number" value="{{row.password}}" style="background: 0;border:0;color:#fff"></td>
+        <td><a class="del" _id="{{row.id}}" style="cursor:pointer;padding: 5px 10px 5px 10px;background-color: red;color: white">删除</a>&nbsp
+            <a class="save" _id="{{row.id}}" style="cursor: pointer;padding: 5px 10px 5px 10px;background-color: red;color: white">保存</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+<script>
+    $('.save').click(function () {
+        var data={};
+        data._id=$(this).attr('_id');
+        var f=['username','password'];
+        var id = $(this).parents("tr").find("input").each(function (i,t) {
+            var key=f[i];
+            var v=$(t).val();
+            data[key]=v;
+        })
+        console.log(data);
+        $.get('/saveU',data,function (result,status) {
+            if(status=='success' && result=="OK")
+                toastr.success(result);
+            else
+                toastr.error(result);
+        });
+    });
+
+    $('.del').click(function () {
+        var data={};
+        data._id=$(this).attr('_id');
+        $.get('/delU',data,function (result,status) {
+            if(status=='success' && result=="OK") {
+                toastr.success("删除成功");
+                window.location.reload();
+            }
+            else{
+                toastr.error(result);
+            }
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,36 @@
+{% extends 'com.html' %}
+{% block title %}用户注册{% endblock %}
+{% block css %}
+{% endblock %}
+{% block script %}
+<script>
+    $("#submit_zc").click(function(){
+            $.get("/reg",$("#form_zc").serialize(),function(result,status){
+                if(result=="OK"){
+                    toastr.success(result);
+                    window.location.href='/';
+                }else{
+                    toastr.error(result);
+                }
+            });
+        });
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container" style="margin-top: 200px;margin-bottom: 380px">
+    <div class="col-md-5 offset-md-3">
+        <form action="javascript:void(0)" id="form_zc">
+            <div class="form-group">
+                <label for="user">用户名：</label>
+                <input type="number" class="form-control" id="user" placeholder="输入用户名" name="username">
+            </div>
+            <div class="form-group">
+                <label for="pwd">密码：</label>
+                <input type="password" class="form-control" id="pwd" placeholder="输入密码" name="password">
+            </div>
+            <input id="submit_zc" class="btn btn-danger btn-block" type="submit" value="注册">
+        </form>
+    </div>
+</div>
+{% endblock %}
